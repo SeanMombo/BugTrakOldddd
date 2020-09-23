@@ -2,9 +2,10 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     body {
-        font-family: 'Open Sans Condensed';
-        padding: 20px 40px;
 
+        font-family: 'Open Sans Condensed';
+        padding: 0px 0px;
+        overflow-x: hidden;
         @media screen and (max-width: 800px) {
             padding: 10px;
         }
@@ -18,4 +19,10 @@ export const GlobalStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
     }
+    
+    .pageWrapper {
+    margin-left:260px;  
+    width: calc(100%-260px);
+}
+    
 `;

@@ -6,5 +6,5 @@ export const HomePageContainer = styled.div`
     align-items: center;
     display: flex;
 
-    padding: 20px 80px;
+ 
 `;

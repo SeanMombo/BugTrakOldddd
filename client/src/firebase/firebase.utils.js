@@ -3,15 +3,15 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-    apiKey: "AIzaSyACmkw7X6NhavvmJ0rZVvyH8ZdlluEbf2Q",
-    authDomain: "ecommercereact-b9094.firebaseapp.com",
-    databaseURL: "https://ecommercereact-b9094.firebaseio.com",
-    projectId: "ecommercereact-b9094",
-    storageBucket: "ecommercereact-b9094.appspot.com",
-    messagingSenderId: "535301259328",
-    appId: "1:535301259328:web:ecd4550afe3271e0b81fa5",
-    measurementId: "G-Z5ZGQ5FDWS"
-};
+    apiKey: "AIzaSyC7J1Jfu8DnMaKYK7XZmwymosz5w5xpluM",
+    authDomain: "bugtrak-ff53f.firebaseapp.com",
+    databaseURL: "https://bugtrak-ff53f.firebaseio.com",
+    projectId: "bugtrak-ff53f",
+    storageBucket: "bugtrak-ff53f.appspot.com",
+    messagingSenderId: "829003961471",
+    appId: "1:829003961471:web:708f796070d53e1a49db4a",
+    measurementId: "G-TFB7THVC8J"
+  };
 
 firebase.initializeApp(config);
 
@@ -67,6 +67,25 @@ export const convertCollectionsSnapshotToMap = (collections) => {
 
     return transformedCollection.reduce((accumulator, collection) => {
         accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
+}
+
+export const convertUsersToMap = (users) => {
+    const transformedCollection = users.docs.map(doc => {
+        const { displayName, userType, email } = doc.data();
+
+        return {
+
+            id: doc.id,
+            displayName,
+            userType,
+            email,
+        }
+    })
+
+    return transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.displayName.toLowerCase()] = collection;
         return accumulator;
     }, {});
 }
