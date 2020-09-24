@@ -3,7 +3,7 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
+import Paper from '@material-ui/core/Paper';
 
 import Header from './components/header/header.component';
 import Spinner from './components/spinner/spinner.component'
@@ -31,9 +31,10 @@ const App = ({ checkUserSession, currentUser }) => {
   return (
     <div>
       <GlobalStyle/>
-      <Header />
       
-      <ControlPanel></ControlPanel> 
+      <Header />
+      <ControlPanel />
+      
       <div className="pageWrapper">
         <Switch>
           <ErrorBoundary>

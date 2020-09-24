@@ -84,10 +84,18 @@ export const convertUsersToMap = (users) => {
         }
     })
 
-    return transformedCollection.reduce((accumulator, collection) => {
+    
+    let acc = transformedCollection.reduce((accumulator, collection) => {
         accumulator[collection.displayName.toLowerCase()] = collection;
         return accumulator;
     }, {});
+
+    const ordered = {};
+    Object.keys(acc).sort().forEach(function(key) {
+      ordered[key] = acc[key];
+    });
+
+    return ordered; 
 }
 
 export const getCurrentUser = () => {

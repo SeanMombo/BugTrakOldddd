@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
 
 export const HeaderContainer = styled.div`
   height: 70px;
@@ -7,7 +8,12 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
-
+  align-items: center;
+  h1 {
+    font-size:40px;
+    margin:0;
+    padding: 10px 15px;
+  }
   @media screen and (max-width: 800px) {
     height: 60px;
     padding: 10px;
@@ -17,7 +23,7 @@ export const HeaderContainer = styled.div`
 
 export const LogoContainer = styled(Link)`
   height: 100%;
-  width: 70px;
+  
   padding: 25px;
 
   @media screen and (max-width: 800px) {

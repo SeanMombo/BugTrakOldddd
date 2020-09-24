@@ -3,6 +3,7 @@ import UserDBActionTypes from './user-db.types';
 
 const INITIAL_STATE = {
     collections: null,
+    searchKey: '',
     isFetching: false,
     errorMessage: undefined
 }
@@ -26,7 +27,15 @@ const userDBReducer = (state = INITIAL_STATE, action) => {
                 isFetching: false,
                 errorMessage: action.payload
             }
-
+        case UserDBActionTypes.UPDATE_SEARCH_KEY:
+            return {
+                ...state,
+                searchKey: action.payload
+            }
+        case UserDBActionTypes.UPDATE_USER_ROLE:
+            return {
+                ...state
+            }
         default:
             return state;
     }

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft:0,
     marginRight:0,
     minWidth: 250,
+ 
     width:"100%",
   },
   selectEmpty: {
@@ -24,14 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
       width:'100%'
+  },
+  nativeSelects: {
+    maxWidth: 250,
   }
 }));
 
 function NativeSelects({collection}) {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    role: '',
-    user: 'hai',
+    role: 'Choose Role',
+    user: 'Choose User',
     name: 'hai',
   });
 
@@ -46,12 +50,17 @@ function NativeSelects({collection}) {
   function handleSubmit(event) {
     event.preventDefault();
     console.log( state); 
+    let uid = collection.find(key => collection[key][state.name])['id'];
+    console.log(uid);
 
+    // updates['/users/' + uid][userType];
+  
+    // return firebase.database().ref().update(updates);
+  }
 
-}
 
   return (
-    <div>
+    <div className={classes.nativeSelects}>
         <h1>Manage User Roles</h1>
         {/* <h3>Select a Role</h3> */}
         <form onSubmit={handleSubmit}>
@@ -60,7 +69,7 @@ function NativeSelects({collection}) {
                 <Select
                     
                 native
-                value={state.age}
+                value={state.user}
                 onChange={handleChange}
                 inputProps={{
                     name: 'user',
@@ -79,7 +88,7 @@ function NativeSelects({collection}) {
                 <Select
                     
                 native
-                value={state.age}
+                value={state.role}
                 onChange={handleChange}
                 inputProps={{
                     name: 'role',
@@ -96,7 +105,7 @@ function NativeSelects({collection}) {
             </FormControl>
             <Button 
                 variant="contained"
-                color="Primary"
+                color="primary"
                 className={classes.button}
                 type="submit"> 
 

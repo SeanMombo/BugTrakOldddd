@@ -8,5 +8,7 @@ export const UserPageContainer = styled.div`
     overflow-x: auto;
 
     margin:20px;
-
+    H1 {
+        margin-top:0;
+    }
 `;

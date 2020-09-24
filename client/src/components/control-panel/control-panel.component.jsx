@@ -1,42 +1,3 @@
-// import React from 'react';
-// import { connect } from 'react-redux';
-// import { createStructuredSelector } from 'reselect';
-
-// import { selectCurrentUser } from '../../redux/user/user.selectors';
-// import Paper from '@material-ui/core/Paper';
-
-// import "./control-panel.styles.scss"
-
-// const ControlPanel = ({currentUser}) => {
-    
-//     const userName = currentUser['displayName'].split(' ')[0];
-
-//     return (
-//         <Paper className='control-panel' elevation={3}>
-
-//             <h4>Welcome, {userName}</h4>
-
-    
-//             <a href="/users">Manage Users</a>
-//             <a href="/projects">Manage Projects</a>
-//             <a href="/myprojects">My Projects</a>
-//             <a href="/mytickets">My Tickets</a>
-
-//         </Paper>
-//     )
-// }
-
-
-
-// const mapStateToProps = createStructuredSelector({
-//     currentUser: selectCurrentUser
-// })
-  
-
-// export default connect(mapStateToProps, null)(ControlPanel);
-  
-
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -89,15 +50,19 @@ ListItemLink.propTypes = {
 
 const useStyles = makeStyles({
   root: {
+    height:'100%',
     width: 260,
     maxWidth:260,
     minWidth:260,
-    padding:16,
+    paddingRight:16,
     paddingTop:0,
     position:'fixed',
-    zIndex:20
+    
   },
-  
+  paper: {
+    height:'100%',
+  },
+
   noPadding: {
 
     paddingTop:0,
@@ -120,7 +85,7 @@ function ControlPanel() {
             <Typography gutterBottom>Current route: {location.pathname}</Typography>
           )}
         </Route> */}
-        <Paper elevation={0}>
+        <Paper elevation={0} className={classes.paper} square >
           <List aria-label="main mailbox folders">
             <ListItemLink to="/users" primary="Manage Users" icon={<InboxIcon />} id={0} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick}/>
             <ListItemLink to="/projects" primary="Manage Projects" icon={<DraftsIcon />} id={1} selectedIndex={selectedIndex} handleListItemClick={handleListItemClick}/>
