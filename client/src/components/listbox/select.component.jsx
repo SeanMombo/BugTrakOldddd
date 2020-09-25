@@ -5,6 +5,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
+import { functions } from '../../firebase/firebase.utils';
+
 
 import NativeSelect from '@material-ui/core/NativeSelect';
 
@@ -49,13 +51,12 @@ function NativeSelects({collection}) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log( state); 
-    let uid = collection.find(key => collection[key][state.name])['id'];
-    console.log(uid);
-
-    // updates['/users/' + uid][userType];
-  
-    // return firebase.database().ref().update(updates);
+    console.log(state); 
+    console.log(state.name)
+    var addAdminRole = functions.httpsCallable('addAdminRole');
+    addAdminRole({email: state.user}).then(result => {
+      console.log(result)
+    })
   }
 
 
@@ -78,7 +79,7 @@ function NativeSelects({collection}) {
                 >
                 <option aria-label="None" value="" />
                 {collection.map((col, i) => (
-                    <option value={col['displayName']}>{col['displayName']}</option>
+                    <option value={col['email']}>{col['email']}</option>
                 ))}
                 </Select>
             </FormControl>
