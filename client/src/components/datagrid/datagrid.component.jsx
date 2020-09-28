@@ -14,7 +14,7 @@ function DataGridBox({collection, updateSearchKey, searchKey, columns}) {
   console.log(collection)
 
   return (
-    <div style={{ height: '500', width: '80%', margin: '64px', marginTop:'0px'}}>
+    <div style={{ minWidth:'260px', width: '80%', margin: '64px', marginTop:'0px'}}>
       <h1>All Users</h1>
       <TextField 
         type="text" 
@@ -23,7 +23,7 @@ function DataGridBox({collection, updateSearchKey, searchKey, columns}) {
         value={searchKey}
         onChange={updateSearchKey}
     />
-        <DataGrid rows={collection} columns={columns} colSpan={3} pageSize={5} autoHeight={true} />
+        <DataGrid rows={collection} columns={columns} colSpan={3} pageSize={5} autoHeight={true} hideFooterSelectedRowCount={true}/>
         
     </div>
   );

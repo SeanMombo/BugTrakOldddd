@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
 
         font-family: 'Open Sans Condensed';
         padding: 0px 0px;
-        overflow-x: hidden;
+        
         @media screen and (max-width: 800px) {
             padding: 10px;
         }
@@ -21,8 +21,11 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     .pageWrapper {
-    margin-left:260px;  
-    width: calc(100%-260px);
-}
+        
+        /* padding:16px; */
+        margin-left:260px;  
+        /* width: calc(100vw-260px);  */
+        overflow-x: auto;
+    }
     
 `;

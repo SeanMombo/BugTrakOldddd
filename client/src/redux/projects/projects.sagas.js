@@ -1,5 +1,6 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { firestore, convertProjectsToMap } from '../../firebase/firebase.utils';
+import { firestore, convertProjectsToMap} from '../../firebase/firebase.utils';
+import firebase from 'firebase/app'
 import {
     fetchProjectsFailure,
     fetchProjectsSuccess,
@@ -30,6 +31,7 @@ export function* createProjectAsync({payload: {title, body}}) {
         firestore.collection("projects").add({
             title: title,
             body: body,
+            dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
         })
         .then(function() {
             console.log("Document successfully written!");
@@ -58,5 +60,8 @@ export function* createProjectStart() {
 
 
 export function* projectSagas() {
-    yield all([call(fetchProjectsStartSaga)])
+    yield all([
+        call(fetchProjectsStartSaga),
+        call(createProjectStart)
+    ])
 }

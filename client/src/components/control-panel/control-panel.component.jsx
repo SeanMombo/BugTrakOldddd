@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     width: 260,
     maxWidth:260,
     minWidth:260,
-    paddingRight:16,
+    // paddingRight:16,
     paddingTop:0,
     position:'fixed',
     

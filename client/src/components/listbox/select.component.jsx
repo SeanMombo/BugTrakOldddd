@@ -12,7 +12,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 
 import { connect } from 'react-redux'
 import { selectCollectionsForPreview } from '../../redux/user-db/user-db.selectors'
-import { updateUserRole } from '../../redux/projects/projects.actions';
+import { updateUserRole } from '../../redux/user-db/user-db.actions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   button: {
-      width:'100%'
+    margin: 8,
+    marginLeft: 0,
+    marginRight: 0,
+    width:'100%'
   },
   nativeSelects: {
     maxWidth: 250,
@@ -38,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
 function NativeSelects({collection, updateUserRole}) {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    role: 'Choose Role',
-    user: 'Choose User',
+    role: '',
+    user: '',
     name: 'hai',
   });
 

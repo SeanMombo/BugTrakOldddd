@@ -43,10 +43,7 @@ const projectReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 searchKey: action.payload
             }
-        case ProjectsActionTypes.UPDATE_USER_ROLE:
-            return {
-                ...state
-            }
+
         default:
             return state;
     }
