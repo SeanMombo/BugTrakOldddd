@@ -1,52 +1,49 @@
 
-import UserDBActionTypes from './user-db.types';
+import ProjectsActionTypes from './projects.types';
 
 const INITIAL_STATE = {
-    collections: null,
+    projects: null,
     searchKey: '',
     isFetching: false,
     errorMessage: undefined
 }
 
-const userDBReducer = (state = INITIAL_STATE, action) => {
+const projectReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case UserDBActionTypes.FETCH_COLLECTIONS_START:
+        case ProjectsActionTypes.FETCH_PROJECTS_START:
             return {
                 ...state,
                 isFetching: true
             }
-        case UserDBActionTypes.FETCH_COLLECTIONS_SUCCESS:
+        case ProjectsActionTypes.FETCH_PROJECTS_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                collections: action.payload
+                projects: action.payload
             }
-        case UserDBActionTypes.FETCH_COLLECTIONS_FAILURE:
-            return {
-                ...state,
-                isFetching: false,
-                errorMessage: action.payload
-            }
-        case UserDBActionTypes.UPDATE_USER_ROLE_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                collections: action.payload
-            }
-        case UserDBActionTypes.UPDATE_USER_ROLE_FAILURE:
+        case ProjectsActionTypes.FETCH_PROJECTS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
                 errorMessage: action.payload
             }
-
-
-        case UserDBActionTypes.UPDATE_SEARCH_KEY:
+        case ProjectsActionTypes.CREATE_PROJECT_START:
+            return {
+                ...state,
+                isFetching: true,
+            }
+        case ProjectsActionTypes.CREATE_PROJECT_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.payload
+            }
+        case ProjectsActionTypes.UPDATE_PROJECT_SEARCH_KEY:
             return {
                 ...state,
                 searchKey: action.payload
             }
-        case UserDBActionTypes.UPDATE_USER_ROLE:
+        case ProjectsActionTypes.UPDATE_USER_ROLE:
             return {
                 ...state
             }
@@ -55,4 +52,4 @@ const userDBReducer = (state = INITIAL_STATE, action) => {
     }
 }
 
-export default userDBReducer;
+export default projectReducer;

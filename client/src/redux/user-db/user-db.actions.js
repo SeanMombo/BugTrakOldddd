@@ -15,6 +15,16 @@ export const fetchCollectionsFailure = errorMessage => ({
     payload: errorMessage
 })
 
+export const updateUserRoleSuccess = collectionsMap => ({
+    type: UserDBActionTypes.UPDATE_USER_ROLE_SUCCESS,
+    payload: collectionsMap
+})
+
+export const updateUserRoleFailure = errorMessage => ({
+    type: UserDBActionTypes.UPDATE_USER_ROLE_FAILURE,
+    payload: errorMessage
+})
+
 export function updateSearchKey(key) {
     return {
       type: UserDBActionTypes.UPDATE_SEARCH_KEY,
@@ -43,25 +53,3 @@ export const fetchCollectionsStartAsync = () => {
     }
 }
 
-// export const searchCollection = () => {
-    
-   
-//         const filtered = Object.keys(collection).filter(key => {
-//           let name = collection[key]['displayName'];
-//           let email = collection[key]['email'];
-//           let type = collection[key]['userType'];
-  
-//           //make sure field is not undefined before we search with 'include'
-//           if (name) name = name.includes(event.target.value);
-//           if (email) email = email.includes(event.target.value);
-//           if (type) type = type.includes(event.target.value);
-//           return name || email || type;
-//         });  
-
-//         const newCollection = {};
-//         for(let k of filtered) {
-//           newCollection[k] = collection[k]
-//         }
-
-   
-// }

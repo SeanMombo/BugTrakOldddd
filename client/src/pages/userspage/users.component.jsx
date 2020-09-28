@@ -5,24 +5,52 @@ import { fetchCollectionsStart} from '../../redux/user-db/user-db.actions';
 import NativeSelects from '../../components/listbox/select.component' 
 import DataGridBox from '../../components/datagrid/datagrid.component'
 import { UserPageContainer } from './users.styles'
-
-const Users = ({ fetchCollectionsStart, match }) => {
+import { selectFilteredUsers } from '../../redux/user-db/user-db.selectors'
+import { updateSearchKey } from '../../redux/user-db/user-db.actions';
+const Users = ({ fetchCollectionsStart, updateSearchKey, collection }) => {
+    const columns = [
+        { field: "displayName",  headerName: "Full Name",  width: 200},
+        { field: "email", headerName: "Email",      width: 250},
+        { field: "userType",  headerName: "Role",       width: 150,}
+      ];
 
     useEffect(() => {
         fetchCollectionsStart();
+
+        //clear search key on unmount
+        return () => {
+            const e = {
+                target: {
+                    value: ''
+                }
+            }
+            updateSearchKey(e);
+        }
+
     }, [fetchCollectionsStart]);
 
     return (
     <UserPageContainer>
    
         <NativeSelects></NativeSelects>
-        <DataGridBox/>
+        <DataGridBox collection={collection} columns={columns} updateSearchKey={updateSearchKey}/>
     </UserPageContainer>
 )}
 
+
+const mapStateToProps = (state) => ({
+    collection: selectFilteredUsers(state)
+})
+
+
 const mapDispatchToProps = dispatch => ({
     fetchCollectionsStart: () =>  
-        dispatch(fetchCollectionsStart())
+        dispatch(fetchCollectionsStart()),
+
+    updateSearchKey: (e) => 
+        dispatch(updateSearchKey(e.target.value)),
 });
 
-export default connect(null, mapDispatchToProps)(Users);
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

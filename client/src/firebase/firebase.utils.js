@@ -27,12 +27,13 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!snapshot.exists) {
         const { displayName, email } = userAuth;
         const createdAt = new Date();
-
+        
         try {
             await userRef.set({
                 displayName,
                 email,
                 createdAt,
+                userType: 'submitter',
                 ...additionalData
             })
         } catch(error) {
@@ -80,12 +81,11 @@ export const convertUsersToMap = (users) => {
 
             id: doc.id,
             displayName,
-            userType,
             email,
+            userType,
         }
     })
 
-    
     let acc = transformedCollection.reduce((accumulator, collection) => {
         accumulator[collection.displayName.toLowerCase()] = collection;
         return accumulator;
@@ -98,6 +98,32 @@ export const convertUsersToMap = (users) => {
 
     return ordered; 
 }
+export const convertProjectsToMap = (users) => {
+    const transformedCollection = users.docs.map(doc => {
+        const { title, body } = doc.data();
+
+        return {
+
+            id: doc.id,
+            title,
+            body,
+        }
+    })
+
+    let acc = transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
+
+    const ordered = {};
+    Object.keys(acc).sort().forEach(function(key) {
+      ordered[key] = acc[key];
+    });
+
+    return ordered; 
+}
+
+
 
 export const getCurrentUser = () => {
     return new Promise((resolve, reject) => {

@@ -8,7 +8,7 @@ import ShopActionTypes from './shop.types';
 
 
 export function* fetchCollectionsAsync() {
-    yield console.log('fired');
+    yield console.log('fired Shop');
 
     try {
         const collectionRef = firestore.collection('collections');

@@ -12,6 +12,8 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 
 import { connect } from 'react-redux'
 import { selectCollectionsForPreview } from '../../redux/user-db/user-db.selectors'
+import { updateUserRole } from '../../redux/projects/projects.actions';
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function NativeSelects({collection}) {
+function NativeSelects({collection, updateUserRole}) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     role: 'Choose Role',
@@ -51,14 +53,14 @@ function NativeSelects({collection}) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(state); 
-    console.log(state.name)
-    var addAdminRole = functions.httpsCallable('addAdminRole');
-    addAdminRole({email: state.user}).then(result => {
-      console.log(result)
-    })
-  }
+    
 
+    let user = collection.find(el => {
+      return el.displayName === state.user;
+    })
+    console.log(user);
+    updateUserRole(user, state.role)
+  }
 
   return (
     <div className={classes.nativeSelects}>
@@ -79,7 +81,7 @@ function NativeSelects({collection}) {
                 >
                 <option aria-label="None" value="" />
                 {collection.map((col, i) => (
-                    <option value={col['email']}>{col['email']}</option>
+                    <option value={col['displayName']}>{col['displayName']}</option>
                 ))}
                 </Select>
             </FormControl>
@@ -97,11 +99,11 @@ function NativeSelects({collection}) {
                 }}
                 >
                     <option aria-label="None" value="" />
-                    <option value={'Admin'}>Admin</option>
-                    <option value={'Developer'}>Developer</option>
-                    <option value={'Project Manager'}>Project Manager</option>
-                    <option value={'Submitter'}>Submitter</option>
-                    <option value={'No role'}>No Role</option>
+                    <option value={'admin'}>Admin</option>
+                    <option value={'dev'}>Developer</option>
+                    <option value={'manager'}>Project Manager</option>
+                    <option value={'submitter'}>Submitter</option>
+                    <option value={'none'}>No Role</option>
                 </Select>
             </FormControl>
             <Button 
@@ -122,4 +124,9 @@ const mapStateToProps = (state) => ({
     collection: selectCollectionsForPreview(state)
 })
 
-export default connect(mapStateToProps)(NativeSelects);
+const mapDispatchToProps = dispatch => ({
+  updateUserRole: (user, role) => dispatch(updateUserRole({ user, role }))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NativeSelects);

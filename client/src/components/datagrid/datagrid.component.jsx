@@ -2,18 +2,14 @@ import * as React from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux'
-import { selectFilteredUsers, selectCollectionsForPreview } from '../../redux/user-db/user-db.selectors'
-import { updateSearchKey } from '../../redux/user-db/user-db.actions';
+
+
 import { createStructuredSelector } from 'reselect';
 
-const columns = [
-  { field: "displayName",  headerName: "Full Name",  width: 200},
-  { field: "email", headerName: "Email",      width: 250},
-  { field: "userType",  headerName: "Role",       width: 150,}
-];
+
 
 //TODO implement search/filter functionality using redux 
-function DataGridBox({collection, updateSearchKey, searchKey}) {
+function DataGridBox({collection, updateSearchKey, searchKey, columns}) {
   console.log('DataGridBox')
   console.log(collection)
 
@@ -33,15 +29,16 @@ function DataGridBox({collection, updateSearchKey, searchKey}) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  collection: selectFilteredUsers(state)
-})
+// const mapStateToProps = (state) => ({
+//   collection: selectFilteredUsers(state)
+// })
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    updateSearchKey: (e) => dispatch(updateSearchKey(e.target.value)),
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     dispatch,
+//     updateSearchKey: (e) => dispatch(updateSearchKey(e.target.value)),
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataGridBox);
+// export default connect(null, mapDispatchToProps)(DataGridBox);
+export default DataGridBox;
