@@ -9,7 +9,7 @@ import { createStructuredSelector } from 'reselect';
 
 
 //TODO implement search/filter functionality using redux 
-function DataGridBox({collection, updateSearchKey, searchKey, columns}) {
+function DataGridBox({collection, updateSearchKey, columns}) {
   console.log('DataGridBox')
   console.log(collection)
 
@@ -20,7 +20,7 @@ function DataGridBox({collection, updateSearchKey, searchKey, columns}) {
         type="text" 
         class="search form-control" 
         placeholder="What you looking for?" 
-        value={searchKey}
+        value={''}
         onChange={updateSearchKey}
     />
         <DataGrid rows={collection} columns={columns} colSpan={3} pageSize={5} autoHeight={true} hideFooterSelectedRowCount={true}/>

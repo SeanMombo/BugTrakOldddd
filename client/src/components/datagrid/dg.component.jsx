@@ -1,24 +1,43 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-    
- 
+import { connect } from 'react-redux'
+import { selectProject } from '../../redux/projects/projects.actions'
+
+import { Switch } from 'react-router-dom'
+import { MemoryRouter as Router } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
   },
-  tableWrapper: {
-      maxWidth: '90%',
-    // margin: 32,
-  }
-});
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -32,35 +51,133 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicTable() {
+const useStyles = makeStyles({
+  table: {
+    minWidth: 700,
+  },
+});
+
+function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  let rows = collection;
+  let history = useHistory();
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+
+  const LinkBehavior = React.forwardRef((props, ref) => (
+    <RouterLink ref={ref} to="/getting-started/installation/" {...props} />
+  ));
+  
+  const handleClick = (event) => {
+    console.log('clickecl')
+    
+    const proj = rows.find(row => 
+      row.id === event.currentTarget.value
+    )
+    console.log(proj)
+    selectProject(proj)
+    history.push("/project");
+  }
+ 
 
   return (
-    <TableContainer className={classes.tableWrapper} component={Paper}>
-      <Table className={classes.table}  aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+    
+    <div>
+       
+      <Divider/>
+      <TableContainer component={Paper}>
+      <TextField 
+          type="text" 
+          class="search form-control" 
+          placeholder="What you looking for?" 
+          value={searchKey}
+          onChange={updateSearchKey}
+      />
+  
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Title</StyledTableCell>
+              <StyledTableCell align="left">Description</StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>
+     
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row) => (
+              <StyledTableRow key={row.name}>
+                <StyledTableCell component="th" scope="row">
+                  {row.title}
+                </StyledTableCell>
+                <StyledTableCell align="left">{row.body}</StyledTableCell>
+                <StyledTableCell align="right">
+
+                  <Button  
+                    variant="contained" color="primary" size="small" 
+                    className={classes.button}
+                    value={row.id}
+                    onClick={handleClick}
+                    >
+                    
+                  
+                    Manage Project
+                  </Button>
+
+                  
+
+                </StyledTableCell> 
+              </StyledTableRow>
+            ))}
+  
+            {/* {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell  align='right'>
+                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })} */}
+          </TableBody>
+        </Table>
+        
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      
+    </div>
+   
   );
 }
+
+
+const mapDispatchToProps = dispatch => ({
+  selectProject: (proj) => 
+    dispatch(selectProject(proj))
+})
+
+export default connect(null, mapDispatchToProps)(BasicTable);

@@ -9,11 +9,16 @@ import BasicTable from '../../components/datagrid/dg.component'
 
 import { ProjectsPageContainer } from './projects.styles'
 
-import { fetchProjectsStart} from '../../redux/projects/projects.actions';
-import { selectFilteredProjects } from '../../redux/projects/projects.selectors';
-import { updateSearchKey, createProject } from '../../redux/projects/projects.actions';
+import { fetchProjectsStart, fetchUsersProjectsStart} from '../../redux/projects/projects.actions';
+import { selectFilteredProjects, } from '../../redux/projects/projects.selectors';
+import { updateSearchKey, createProject, selectProject } from '../../redux/projects/projects.actions';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+
+
+import { fetchCollectionsStart } from '../../redux/user-db/user-db.actions'
+
+
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -21,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Projects = ({ fetchProjectsStart, projects, updateSearchKey }) => {
+const Projects = ({ fetchProjectsStart, fetchCollectionsStart, fetchUsersProjectsStart, projects, updateSearchKey }) => {
     const classes = useStyles();
     const columns = [
         { field: "title",  headerName: "Project Title", width: 200},
@@ -42,7 +47,8 @@ const Projects = ({ fetchProjectsStart, projects, updateSearchKey }) => {
     
     useEffect(() => {
         fetchProjectsStart();
-
+        fetchCollectionsStart();
+        fetchUsersProjectsStart();
     //clear search key on unmount
         return () => {
             const e = {
@@ -58,7 +64,7 @@ const Projects = ({ fetchProjectsStart, projects, updateSearchKey }) => {
     return (
     <ProjectsPageContainer>
         <CreateProject/>
-        <BasicTable/>
+        <BasicTable collection={projects} updateSearchKey={updateSearchKey} selectProject={selectProject}/>
         {/* <DataGridBox collection={projects} columns={columns} updateSearchKey={updateSearchKey}/> */}
     </ProjectsPageContainer>
 )}
@@ -71,10 +77,15 @@ const mapDispatchToProps = dispatch => ({
     fetchProjectsStart: () =>  
         dispatch(fetchProjectsStart()),
 
+    fetchCollectionsStart: () =>  
+        dispatch(fetchCollectionsStart()),
+    fetchUsersProjectsStart: () => 
+        dispatch(fetchUsersProjectsStart()),
     updateSearchKey: (e) => 
         dispatch(updateSearchKey(e.target.value)),
 
-    // createProject: ({title, body}) =>
+
+        // createProject: ({title, body}) =>
     //     dispatch(createProject({title, body}))
 });
 

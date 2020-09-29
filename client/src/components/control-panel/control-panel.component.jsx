@@ -78,7 +78,7 @@ function ControlPanel() {
   };
   
   return (
-    <Switch initialEntries={['/drafts']} initialIndex={0}>
+    <Switch initialEntries={['/users']} initialIndex={0}>
       <div className={classes.root}>
         {/* <Route>
           {({ location }) => (

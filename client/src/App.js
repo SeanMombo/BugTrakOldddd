@@ -19,6 +19,8 @@ import { GlobalStyle } from './global.styles';
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const Users = lazy(() => import('./pages/userspage/users.component'));
 const Projects = lazy(() => import('./pages/projectspage/projects.component'));
+const Project = lazy(() => import('./pages/projectspage/project.component'));
+
 // const ShopPage = lazy(() => import('./pages/shop/shop.component'));
 const SignInAndSignUp = lazy(() => import('./components/sign-in-and-sign-up/sign-in-and-sign-up.component'));
 // const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
@@ -43,8 +45,9 @@ const App = ({ checkUserSession, currentUser }) => {
 
             
               <LoginRerouter exact path='/' component={HomePage} currentUser={currentUser} />
-              <LoginRerouter exact path='/users' component={Users} currentUser={currentUser} />
-              <LoginRerouter exact path='/projects' component={Projects} currentUser={currentUser} />
+              <LoginRerouter path='/users' component={Users} currentUser={currentUser} />
+              <LoginRerouter path='/projects' component={Projects} currentUser={currentUser} />
+              <LoginRerouter path='/project' component={Project} currentUser={currentUser} />
               <Route 
                 exact
                 path='/signin' 

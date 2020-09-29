@@ -72,40 +72,4 @@ export const selectFilteredUsers = createSelector(
     }
 );
 
-                  
-export const selectFilteredProjects = createSelector(
-    [selectCollections],
-    collections => collections ? Object.keys(collections).map(key => collections[key]) : []
-    // (collections, searchKey) => {
-    //     searchKey = searchKey.toLowerCase();
-
-    //     if (collections) {
-
-    //         let userArr = Object.keys(collections).map(key => collections[key]);
-    //         console.log(searchKey)
-    //         if (searchKey === '') return userArr;
-    //         console.log(userArr)
-    //         let filteredUsers = userArr.filter(user => {
-
-    //             let name = user['displayName']
-    //             let email = user['email']
-    //             let type = user['userType']
-                
-    //             //make sure field is not undefined before we search with 'include'
-    //             if (name) name = name.toLowerCase().includes(searchKey);
-    //             if (email) email = email.toLowerCase().includes(searchKey);
-    //             if (type) type = type.toLowerCase().includes(searchKey);
-    //             if (name || email || type) 
-    //                 return true; 
-    //             else 
-    //                 return false;
-    //         })
-
-    //         return filteredUsers;
-    //     } else {
-    //         return [];
-    //     }
-    // }
-);
-
-    
+       

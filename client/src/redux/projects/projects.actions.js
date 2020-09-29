@@ -15,6 +15,25 @@ export const fetchProjectsFailure = errorMessage => ({
     payload: errorMessage
 })
 
+export const fetchUsersProjectsStart = (collectionsMap) => ({
+    type: ProjectsActionTypes.FETCH_USERS_PROJECTS_START,
+})
+
+export const fetchUsersProjectsSuccess = collectionsMap => ({
+    type: ProjectsActionTypes.FETCH_USERS_PROJECTS_SUCCESS,
+    payload: collectionsMap
+})
+
+export const fetchUsersProjectsFailure = errorMessage => ({
+    type: ProjectsActionTypes.FETCH_USERS_PROJECTS_FAILURE,
+    payload: errorMessage
+})
+
+
+
+
+
+
 export const createProjectStart = (collectionsMap) => ({
     type: ProjectsActionTypes.CREATE_PROJECT_START,
 })
@@ -32,13 +51,20 @@ export function updateSearchKey(key) {
       type: ProjectsActionTypes.UPDATE_PROJECT_SEARCH_KEY,
       payload: key,
     };
-  }
+}
 
 export function createProject(data) {
     return {
         type: ProjectsActionTypes.CREATE_PROJECT_START,
         payload: data,
     }
+}
+
+export function selectProject(proj) {
+    return {
+      type: ProjectsActionTypes.SELECT_PROJECT,
+      payload: proj,
+    };
 }
 
 export const fetchProjectsStartAsync = () => {

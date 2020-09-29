@@ -123,6 +123,28 @@ export const convertProjectsToMap = (users) => {
     return ordered; 
 }
 
+export const convertUsersProjectsToMap = (users) => {
+    const transformedCollection = users.docs.map(doc => {
+        const { userId, projectId } = doc.data();
+
+        return {
+            id: doc.id,
+            users,
+        }
+    })
+
+    let acc = transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.id.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
+
+    const ordered = {};
+    Object.keys(acc).sort().forEach(function(key) {
+      ordered[key] = acc[key];
+    });
+
+    return ordered; 
+}
 
 
 export const getCurrentUser = () => {
