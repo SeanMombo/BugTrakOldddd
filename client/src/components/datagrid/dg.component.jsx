@@ -54,6 +54,7 @@ const rows = [
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
+    height:'100%',
   },
 });
 
@@ -88,7 +89,15 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
     selectProject(proj)
     history.push("/project");
   }
- 
+
+  function truncateString(str, num) {
+    if (str.length <= num) {
+      return str
+    }
+    return str.slice(0, num) + '...'
+  }
+  
+
 
   return (
     
@@ -104,7 +113,7 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
           onChange={updateSearchKey}
       />
   
-        <Table className={classes.table} aria-label="customized table">
+        <Table className={classes.table} size="small" aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Title</StyledTableCell>
@@ -120,9 +129,9 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
             ).map((row) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell component="th" scope="row">
-                  {row.title}
+                  {truncateString(row.title, 20)}
                 </StyledTableCell>
-                <StyledTableCell align="left">{row.body}</StyledTableCell>
+                <StyledTableCell align="left">{truncateString(row.body, 20)}</StyledTableCell>
                 <StyledTableCell align="right">
 
                   <Button  

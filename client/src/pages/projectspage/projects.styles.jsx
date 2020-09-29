@@ -19,7 +19,7 @@ export const ProjectsPageContainer = styled.div`
 export const InnerProjectPageContainer = styled.div`
     display: flex;
     flex-direction:row;
-    
+    height:100%;
     /* justify-content:space-evenly;
     align-content:space-evenly; */
 
