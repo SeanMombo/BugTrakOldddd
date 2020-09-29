@@ -111,7 +111,7 @@ export const convertProjectsToMap = (users) => {
     })
 
     let acc = transformedCollection.reduce((accumulator, collection) => {
-        accumulator[collection.title.toLowerCase()] = collection;
+        accumulator[collection.id.toLowerCase()] = collection;
         return accumulator;
     }, {});
 
@@ -125,11 +125,11 @@ export const convertProjectsToMap = (users) => {
 
 export const convertUsersProjectsToMap = (users) => {
     const transformedCollection = users.docs.map(doc => {
-        const { userId, projectId } = doc.data();
+        const { users } = doc.data();
 
         return {
             id: doc.id,
-            users,
+            users: users,
         }
     })
 

@@ -58,6 +58,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
+
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

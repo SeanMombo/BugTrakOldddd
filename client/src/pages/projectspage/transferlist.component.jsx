@@ -19,14 +19,15 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: 'auto',
+    // margin: 'auto',
+    minWidth:630
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
   },
   list: {
-    width: 200,
-    height: 230,
+    width: 240,
+    height: 330,
     backgroundColor: theme.palette.background.paper,
     overflow: 'auto',
   },
@@ -48,25 +49,29 @@ function union(a, b) {
 }
 
 function TransferList({users, users_projects, selectedProject}) {
-    console.log(users_projects)
-    console.log(users)
+    console.log('Transferlist start')
+    
+    let projId = selectedProject.id;
+    let usersAssignedToProject = users_projects.find(p => p.id === projId).users; //array of users who are assigned to project
 
-    const l = [];
-    const r = [];
+    let l = [], r = [];
 
-    Object.keys(users_projects).forEach(key => {
-        const userProj = users_projects[key];
-        if (userProj.projectId === selectedProject.id) {
-            const user = users.find(el => el.id === userProj.userId)
-            if (user)
-                l.push(user.displayName)
-        } 
-    })
+    r = usersAssignedToProject;
+    l = Object.keys(users).map(key => users[key].id)
+
+    l = l.filter(key => {
+        return r.includes(key) ? false : true
+        }
+    )
+
+    l = l.map(k => users.find(u => u.id === k).displayName);
+    r = r.map(k => users.find(u => u.id === k).displayName);
+
 
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
     const [left, setLeft] = React.useState(l);
-    const [right, setRight] = React.useState([4, 5, 6, 7]);
+    const [right, setRight] = React.useState(r);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -106,49 +111,54 @@ function TransferList({users, users_projects, selectedProject}) {
         setChecked(not(checked, rightChecked));
     };
 
-  const customList = (title, items) => (
-    <Card>
-      <CardHeader
-        className={classes.cardHeader}
-        avatar={
-          <Checkbox
-            onClick={handleToggleAll(items)}
-            checked={numberOfChecked(items) === items.length && items.length !== 0}
-            indeterminate={numberOfChecked(items) !== items.length && numberOfChecked(items) !== 0}
-            disabled={items.length === 0}
-            inputProps={{ 'aria-label': 'all items selected' }}
-          />
-        }
-        title={title}
-        subheader={`${numberOfChecked(items)}/${items.length} selected`}
-      />
-      <Divider />
-      <List className={classes.list} dense component="div" role="list">
-        {items.map((value) => {
-          const labelId = `transfer-list-all-item-${value}-label`;
+  const customList = (title, items, text) => (
+      <div>
+          <h1>{text}</h1>
+        <Card>
 
-          return (
-            <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
-              <ListItemIcon>
-                <Checkbox
-                  checked={checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={`${value}`} />
-            </ListItem>
-          );
-        })}
-        <ListItem />
-      </List>
-    </Card>
+        <CardHeader
+            className={classes.cardHeader}
+            avatar={
+            <Checkbox
+                onClick={handleToggleAll(items)}
+                checked={numberOfChecked(items) === items.length && items.length !== 0}
+                indeterminate={numberOfChecked(items) !== items.length && numberOfChecked(items) !== 0}
+                disabled={items.length === 0}
+                inputProps={{ 'aria-label': 'all items selected' }}
+            />
+            }
+            title={title}
+            subheader={`${numberOfChecked(items)}/${items.length} selected`}
+        />
+        <Divider />
+        <List className={classes.list} dense component="div" role="list">
+            {items.map((value) => {
+            const labelId = `transfer-list-all-item-${value}-label`;
+
+            return (
+                <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
+                <ListItemIcon>
+                    <Checkbox
+                    checked={checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={`${value}`} />
+                </ListItem>
+            );
+            })}
+            <ListItem />
+        </List>
+        </Card>
+      </div>
   );
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-      <Grid item>{customList('Choices', left)}</Grid>
+    <Grid container spacing={2}  alignItems="center" className={classes.root}>
+       
+      <Grid item >{customList('Choices', left, 'Free Users')}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
           <Button
@@ -173,7 +183,8 @@ function TransferList({users, users_projects, selectedProject}) {
           </Button>
         </Grid>
       </Grid>
-      <Grid item>{customList('Chosen', right)}</Grid>
+      
+      <Grid item >{customList('Chosen', right, 'Project Team')}</Grid>
     </Grid>
   );
 }
