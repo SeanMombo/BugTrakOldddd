@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 
 import Header from './components/header/header.component';
 import Spinner from './components/spinner/spinner.component'
@@ -15,6 +16,7 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 import { checkUserSession } from './redux/user/user.actions'
 import { GlobalStyle } from './global.styles';
 
+import { fetchTicketsStart } from './redux/tickets/tickets.actions';
 
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const Users = lazy(() => import('./pages/userspage/users.component'));
@@ -25,10 +27,12 @@ const Project = lazy(() => import('./pages/projectspage/project.component'));
 const SignInAndSignUp = lazy(() => import('./components/sign-in-and-sign-up/sign-in-and-sign-up.component'));
 // const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'));
 
-const App = ({ checkUserSession, currentUser }) => {
+const App = ({ checkUserSession, currentUser, fetchTicketsStart }) => {
 
   useEffect(() => {
     checkUserSession();
+    fetchTicketsStart();
+
   }, [checkUserSession]);
 
   return (
@@ -36,6 +40,7 @@ const App = ({ checkUserSession, currentUser }) => {
       <GlobalStyle/>
       
       <Header />
+ 
       <ControlPanel />
       
       <div className="pageWrapper">
@@ -73,7 +78,11 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = dispatch => ({
-  checkUserSession: () => dispatch(checkUserSession())
+  checkUserSession: () => dispatch(checkUserSession()),
+  fetchTicketsStart: () => dispatch(fetchTicketsStart()),
+
+
+  
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

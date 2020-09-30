@@ -53,9 +53,14 @@ const rows = [
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700,
+    minWidth: 900,
     height:'100%',
   },
+  wrapper: {
+    
+    height:'552px',
+
+  }
 });
 
 function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
@@ -101,10 +106,10 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
 
   return (
     
-    <div>
+    <Paper className={classes.wrapper}>
        
       <Divider/>
-      <TableContainer component={Paper}>
+      <TableContainer >
       <TextField 
           type="text" 
           class="search form-control" 
@@ -179,7 +184,7 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
       
-    </div>
+    </Paper>
    
   );
 }

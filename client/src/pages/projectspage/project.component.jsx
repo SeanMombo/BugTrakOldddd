@@ -85,10 +85,10 @@ const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collec
     
         <Divider/><br/>
         <InnerProjectPageContainer>
-        <TransferList selectedProject={selectedProject}/>
-            {/* <ProjectSelect ></ProjectSelect> */}
+            
+            <TransferList selectedProject={selectedProject}/>
             <BasicTable collection={projects} updateSearchKey={updateSearchKey}/>
-            {/* <DataGridBox collection={projects} columns={columns} updateSearchKey={updateSearchKey}/> */}
+            
         </InnerProjectPageContainer>
     </ProjectsPageContainer>
 )}

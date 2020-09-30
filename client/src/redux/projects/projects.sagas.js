@@ -9,6 +9,7 @@ import {
     fetchUsersProjectsFailure,
     fetchUsersProjectsStart,
     fetchUsersProjectsSuccess,
+    updateUsersProjects, updateUsersProjectsFailure, updateUsersProjectsSuccess
 } from './projects.actions'
 import ProjectsActionTypes from './projects.types';
 
@@ -70,15 +71,37 @@ export function* createProjectAsync({payload: {title, body}}) {
         //     console.error("Error writing document: ", error);
         // });
 
-        
-
-
         yield put(fetchProjectsStart());
     } catch (error) {
         yield put(createProjectFailure(error.message));
     }
 }
 
+export function* updateUsersProjectsAsync({payload: {projID, users}}) {
+    yield console.log('fired updateUsersProjectsAsync');
+
+    try {
+            firestore.collection("users_projects").doc(projID).set({
+                users: users,   
+            }, { merge: true })
+            .then(function() {
+                console.log(firestore.collection("users_projects").doc(projID))
+                console.log("Project Team successfully updated");
+            })
+
+        yield put(updateUsersProjectsSuccess());
+        yield put(fetchUsersProjectsStart());
+
+    } catch (error) {
+        yield put(updateUsersProjectsFailure(error.message));
+    }
+}
+
+export function* updateUsersProjectsSaga() {
+    yield takeLatest(
+        ProjectsActionTypes.UPDATE_USERS_PROJECTS_START, 
+        updateUsersProjectsAsync)
+}
 
 export function* fetchProjectsStartSaga() {
     yield takeLatest(
@@ -104,5 +127,6 @@ export function* projectSagas() {
         call(fetchProjectsStartSaga),
         call(createProjectStart),
         call(fetchUsersProjectsStartSaga),
+        call(updateUsersProjectsSaga),
     ])
 }

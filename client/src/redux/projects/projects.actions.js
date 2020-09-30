@@ -29,9 +29,19 @@ export const fetchUsersProjectsFailure = errorMessage => ({
     payload: errorMessage
 })
 
+export const updateUsersProjectsStart = (collectionsMap) => ({
+    type: ProjectsActionTypes.UPDATE_USERS_PROJECTS_START,
+})
 
+export const updateUsersProjectsSuccess = collectionsMap => ({
+    type: ProjectsActionTypes.UPDATE_USERS_PROJECTS_SUCCESS,
+    payload: collectionsMap
+})
 
-
+export const updateUsersProjectsFailure = errorMessage => ({
+    type: ProjectsActionTypes.UPDATE_USERS_PROJECTS_FAILURE,
+    payload: errorMessage
+})
 
 
 export const createProjectStart = (collectionsMap) => ({
@@ -43,7 +53,6 @@ export const createProjectFailure = errorMessage => ({
     type: ProjectsActionTypes.CREATE_PROJECT_FAILURE,
     payload: errorMessage
 })
-
 
 
 export function updateSearchKey(key) {
@@ -67,16 +76,23 @@ export function selectProject(proj) {
     };
 }
 
-export const fetchProjectsStartAsync = () => {
-    return dispatch => {
-        const collectionRef = firestore.collection('projects');
-        dispatch(fetchProjectsStart());
-
-        collectionRef.get().then(snapshot => {
-            const collectionsMap = convertUsersToMap(snapshot);
-            console.log(collectionsMap)
-            dispatch(fetchProjectsSuccess(collectionsMap));
-            
-        }).catch(error => dispatch(fetchProjectsFailure(error.message)));
-    }
+export function updateUsersProjects(data) {
+    return {
+      type: ProjectsActionTypes.UPDATE_USERS_PROJECTS_START,
+      payload: data,
+    };
 }
+
+// export const fetchProjectsStartAsync = () => {
+//     return dispatch => {
+//         const collectionRef = firestore.collection('projects');
+//         dispatch(fetchProjectsStart());
+
+//         collectionRef.get().then(snapshot => {
+//             const collectionsMap = convertUsersToMap(snapshot);
+//             console.log(collectionsMap)
+//             dispatch(fetchProjectsSuccess(collectionsMap));
+            
+//         }).catch(error => dispatch(fetchProjectsFailure(error.message)));
+//     }
+// }

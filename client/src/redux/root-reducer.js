@@ -9,6 +9,7 @@ import directoryReducer from './directory/directory.reducer'
 import shopReducer from './shop/shop.reducer'
 import userDBReducer from './user-db/user-db.reducer'
 import projectReducer from './projects/projects.reducer';
+import ticketReducer from './tickets/tickets.reducer';
 
 const persistConfig = {
     key: 'root',
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     shop: shopReducer,
     userdb: userDBReducer,
     project: projectReducer,
+    tickets: ticketReducer
 })
 
 export default persistReducer(persistConfig, rootReducer);

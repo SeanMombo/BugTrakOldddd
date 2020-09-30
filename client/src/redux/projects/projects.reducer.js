@@ -57,6 +57,24 @@ const projectReducer = (state = INITIAL_STATE, action) => {
                 isFetching: false,
                 errorMessage: action.payload
             }
+
+        case ProjectsActionTypes.UPDATE_USERS_PROJECTS_START:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case ProjectsActionTypes.UPDATE_USERS_PROJECTS_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                // users_projects: action.payload
+            }
+        case ProjectsActionTypes.UPDATE_USERS_PROJECTS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.payload
+            }
         case ProjectsActionTypes.UPDATE_PROJECT_SEARCH_KEY:
             return {
                 ...state,

@@ -10,17 +10,39 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+import { updateUsersProjects } from '../../redux/projects/projects.actions'
 import { selectUsersProjectsArray } from '../../redux/projects/projects.selectors';
 import { selectCollectionsForPreview } from '../../redux/user-db/user-db.selectors';
 
-
 import { connect } from 'react-redux'
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // margin: 'auto',
+    
+    justifyContent:'center',
     minWidth:630
+  },
+  root2: {
+    height:'100%',
+    marginRight:32,
+    // display:'flex',
+    minWidth:630,
+    
+    // backgroundColor: theme.palette.text.primary
+    
+  },
+  root3: {
+
+    padding:32,
+    // backgroundColor: theme.palette.text.primary
+    
+  },
+  cardTitle: {
+    textAlign:'center',
+    margin:8,
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
@@ -33,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(0.5, 0),
+  },
+  buttonUpdate: {
+
+    width:'575px',
+    margin: theme.spacing(0.5, 0),
+    marginTop: '16px'
   },
 }));
 
@@ -48,7 +76,7 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 
-function TransferList({users, users_projects, selectedProject}) {
+function TransferList({users, users_projects, selectedProject, updateUsersProjects}) {
     console.log('Transferlist start')
     
     let projId = selectedProject.id;
@@ -111,11 +139,21 @@ function TransferList({users, users_projects, selectedProject}) {
         setChecked(not(checked, rightChecked));
     };
 
+  const handleUpdateTeam = () => {
+    let l2, r2;
+
+    l2 = left.map(k => users.find(u => u.displayName === k).id);
+    r2 = right.map(k => users.find(u => u.displayName === k).id);
+
+    updateUsersProjects(projId, r2);
+  };
+
   const customList = (title, items, text) => (
       <div>
-          <h1>{text}</h1>
+          
         <Card>
-
+        <h2 className={classes.cardTitle}>{text}</h2>
+        <Divider />
         <CardHeader
             className={classes.cardHeader}
             avatar={
@@ -156,36 +194,51 @@ function TransferList({users, users_projects, selectedProject}) {
   );
 
   return (
-    <Grid container spacing={2}  alignItems="center" className={classes.root}>
+    <div className={classes.root2} alignItems="center" >
        
-      <Grid item >{customList('Choices', left, 'Free Users')}</Grid>
-      <Grid item>
-        <Grid container direction="column" alignItems="center">
-          <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
-            aria-label="move selected right"
-          >
-            &gt;
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
-            aria-label="move selected left"
-          >
-            &lt;
+      <Paper className={classes.root3} alignItems="center" >
+
+        <Grid container spacing={2}  alignItems="center"  className={classes.root}>
+          
+          <Grid item >{customList('Choices', left, 'Unassigned Users')}</Grid>
+          <Grid item>
+            <Grid container direction="column" alignItems="center">
+              <Button
+                variant="outlined"
+                size="small"
+                className={classes.button}
+                onClick={handleCheckedRight}
+                disabled={leftChecked.length === 0}
+                aria-label="move selected right"
+              >
+                &gt;
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                className={classes.button}
+                onClick={handleCheckedLeft}
+                disabled={rightChecked.length === 0}
+                aria-label="move selected left"
+              >
+                &lt;
+              </Button>
+            </Grid>
+          </Grid>
+          
+          <Grid item >{customList('Chosen', right, 'Current Team')}</Grid>
+          <Button 
+            className={classes.buttonUpdate}
+            variant="contained" 
+            color="primary"
+            onClick={handleUpdateTeam}
+            >
+            Update Team
           </Button>
         </Grid>
-      </Grid>
-      
-      <Grid item >{customList('Chosen', right, 'Project Team')}</Grid>
-    </Grid>
+        
+      </Paper>
+    </div>
   );
 }
 
@@ -195,9 +248,10 @@ const mapStateToProps = (state) => ({
   })
 
 const mapDispatchToProps = dispatch => ({
-
+  updateUsersProjects: (projID, users) => 
+    dispatch(updateUsersProjects({projID, users}))
 
 });
 
 
-export default connect(mapStateToProps)(TransferList)
+export default connect(mapStateToProps, mapDispatchToProps)(TransferList)

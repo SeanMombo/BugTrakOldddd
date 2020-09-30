@@ -7,7 +7,7 @@ export const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
+  
   align-items: center;
   h1 {
     font-size:40px;
@@ -20,6 +20,9 @@ export const HeaderContainer = styled.div`
     margin-bottom:60px;
   }
 `;
+export const HeaderContainerWrapper = styled.div`
+  margin-bottom: 25px;
+  `;
 
 export const LogoContainer = styled(Link)`
   height: 100%;

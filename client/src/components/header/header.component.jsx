@@ -9,15 +9,19 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { signOutStart } from '../../redux/user/user.actions';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 
 import {
   HeaderContainer,
   LogoContainer,
   OptionsContainer,
-  OptionLink
+  OptionLink,
+  HeaderContainerWrapper
 } from './header.styles';
 
 const Header = ({ currentUser, hidden, signOutStart }) => (
+  <HeaderContainerWrapper>
+
   <HeaderContainer>
     
       <h1>BugTrak</h1>
@@ -34,8 +38,10 @@ const Header = ({ currentUser, hidden, signOutStart }) => (
         )}
       
       </OptionsContainer>
-
+          
   </HeaderContainer>
+  <Divider/>
+  </HeaderContainerWrapper>
 );
 
 const mapStateToProps = createStructuredSelector({
