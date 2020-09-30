@@ -1,5 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { firestore, convertProjectsToMap, convertUsersProjectsToMap} from '../../firebase/firebase.utils';
+import { firestore, convertProjectsToMap, convertUsersProjectsToMap } from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
 import {
     fetchProjectsFailure,

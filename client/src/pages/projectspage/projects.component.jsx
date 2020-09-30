@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import CreateProject from '../../components/listbox/createproject.component' 
 import DataGridBox from '../../components/datagrid/datagrid.component'
-import BasicTable from '../../components/datagrid/dg.component'
+import ProjectsTable from '../../components/datagrid/projects-table.component'
 
 
 import { ProjectsPageContainer } from './projects.styles'
@@ -64,7 +64,7 @@ const Projects = ({ fetchProjectsStart, fetchCollectionsStart, fetchUsersProject
     return (
     <ProjectsPageContainer>
         <CreateProject/>
-        <BasicTable collection={projects} updateSearchKey={updateSearchKey} selectProject={selectProject}/>
+        <ProjectsTable type={1} collection={projects} updateSearchKey={updateSearchKey} selectProject={selectProject}/>
         {/* <DataGridBox collection={projects} columns={columns} updateSearchKey={updateSearchKey}/> */}
     </ProjectsPageContainer>
 )}

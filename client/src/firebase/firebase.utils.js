@@ -146,6 +146,35 @@ export const convertUsersProjectsToMap = (users) => {
     return ordered; 
 }
 
+export const convertTicketsToMap = (tickets) => {
+    const transformedCollection = tickets.docs.map(doc => {
+        const { 
+            createdBy, assignedTo, projectId, 
+            title, body, status, type, priority,
+            dateCreated, dateEdited
+        } = doc.data();
+
+        return {
+            id: doc.id,
+            projectId: projectId,
+            title: title,
+            body: body,
+            
+        }
+    })
+
+    let acc = transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.id.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
+
+    const ordered = {};
+    Object.keys(acc).sort().forEach(function(key) {
+      ordered[key] = acc[key];
+    });
+
+    return ordered; 
+}
 
 export const getCurrentUser = () => {
     return new Promise((resolve, reject) => {

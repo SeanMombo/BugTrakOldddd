@@ -4,7 +4,7 @@ import TicketActionTypes from './tickets.types';
 const INITIAL_STATE = {
     collections: null,
     isFetching: false,
-    errorMessage: undefined
+    errorMessage: 'testerror'
 }
 
 const TicketReducer = (state = INITIAL_STATE, action) => {

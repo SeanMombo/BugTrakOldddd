@@ -2,23 +2,23 @@ import React, { useEffect }  from 'react';
 
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
-import CreateProject from '../../components/listbox/createproject.component' 
-import DataGridBox from '../../components/datagrid/datagrid.component'
-import BasicTable from '../../components/datagrid/dg.component'
-import ProjectSelect from '../../components/listbox/projectselect.component' 
+import TicketTable from '../../components/datagrid/tickets-table.component'
+
 import Divider from '@material-ui/core/Divider';
 
 import Typography from '@material-ui/core/Typography';
 import { ProjectsPageContainer, InnerProjectPageContainer } from './projects.styles'
 import { makeStyles } from '@material-ui/core/styles';
-import { fetchProjectsStart} from '../../redux/projects/projects.actions';
-import { selectFilteredProjects, selectSelectedProject, selectUsersProjects } from '../../redux/projects/projects.selectors';
-import { updateSearchKey, fetchUsersProjectsStart, createProject } from '../../redux/projects/projects.actions';
+import {selectSelectedProject } from '../../redux/projects/projects.selectors';
+import { updateSearchKey } from '../../redux/projects/projects.actions';
 
-import { selectFilteredUsers } from '../../redux/user-db/user-db.selectors';
-import { fetchCollectionsStart } from '../../redux/user-db/user-db.actions'
+import { fetchTicketsStart } from '../../redux/tickets/tickets.actions'
 
 import TransferList from './transferlist.component'
+import { selectIsTicketsFetching } from '../../redux/tickets/tickets.selectors';
+import WithSpinner from '../../components/with-spinner/with-spinner.component'
+
+const BasicTableWithSpinner = WithSpinner(TicketTable)
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -28,11 +28,17 @@ const useStyles = makeStyles((theme) => ({
       display:'flex',
       flexDirection:'row',
       justifyContent:'space-between',
-
+  },
+  vert: {
+     margin:8 
+  },
+  titleStyle: {
+    fontWeight: 'bold'
   }
 }));
 
-const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collection, updateSearchKey, selectedProject, users_projects }) => {
+const Project = ({fetchTicketsStart,  tickets, updateSearchKey, selectedProject, isLoading }) => {
+    
     const classes = useStyles();
     const title = selectedProject.title;
     const body = selectedProject.body;
@@ -55,6 +61,7 @@ const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collec
     
     useEffect(() => {
         // fetchProjectsStart();
+        fetchTicketsStart(selectedProject.id);
 
     //clear search key on unmount
         return () => {
@@ -66,7 +73,7 @@ const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collec
             updateSearchKey(e);
         }
 
-    }, [fetchProjectsStart]);
+    }, [fetchTicketsStart]);
 
     
 
@@ -74,7 +81,7 @@ const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collec
     <ProjectsPageContainer>
         
             <div>
-                <Typography variant="h2" component="h2">
+                <Typography className={classes.titleStyle} variant="h2" component="h2">
                     {title}
                 </Typography>
                 <Typography variant="h5" component="h3">
@@ -87,27 +94,24 @@ const Project = ({ fetchProjectsStart, fetchUsersProjectsStart, projects, collec
         <InnerProjectPageContainer>
             
             <TransferList selectedProject={selectedProject}/>
-            <BasicTable collection={projects} updateSearchKey={updateSearchKey}/>
+            <Divider className={classes.vert} orientation="vertical" flexItem />
+            <BasicTableWithSpinner isLoading={isLoading} type={0} updateSearchKey={updateSearchKey} selectedProject={selectedProject}/>
             
         </InnerProjectPageContainer>
     </ProjectsPageContainer>
 )}
 
 const mapStateToProps = (state) => ({
-    projects: selectFilteredProjects(state),
     selectedProject: selectSelectedProject(state),
-    collection: selectFilteredUsers(state),
-
+    isLoading: selectIsTicketsFetching(state),
   })
 
 const mapDispatchToProps = dispatch => ({
-    fetchProjectsStart: () =>  
-        dispatch(fetchProjectsStart()),
-    
-        
+    fetchTicketsStart: (projectId) => 
+        dispatch(fetchTicketsStart({projectId})), 
+
     updateSearchKey: (e) => 
         dispatch(updateSearchKey(e.target.value)),
-
 });
 
 

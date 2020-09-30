@@ -21,16 +21,17 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    
+    // margin:'-16px',
     justifyContent:'center',
     minWidth:630
   },
   root2: {
     height:'100%',
-    marginRight:32,
+    padding:16,
+    paddingTop:0,
     // display:'flex',
     minWidth:630,
-    
+    flex:1,
     // backgroundColor: theme.palette.text.primary
     
   },
@@ -43,6 +44,15 @@ const useStyles = makeStyles((theme) => ({
   cardTitle: {
     textAlign:'center',
     margin:8,
+    
+  },
+  sectionTitle: {
+    textAlign:'center',
+    padding:16,
+    
+   
+    // backgroundColor: 'black',
+    // color: 'white',
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
@@ -194,10 +204,16 @@ function TransferList({users, users_projects, selectedProject, updateUsersProjec
   );
 
   return (
-    <div className={classes.root2} alignItems="center" >
+    // <div className={classes.root2} alignItems="center" >
        
-      <Paper className={classes.root3} alignItems="center" >
-
+      <Paper className={classes.root2} alignItems="center" >
+        <Typography className={classes.sectionTitle} variant="h4" >Manage Project Team</Typography>
+        <Divider/>
+        <br/>
+        {/* <Card className={classes.sectionTitle}>
+        
+        </Card> */}
+        
         <Grid container spacing={2}  alignItems="center"  className={classes.root}>
           
           <Grid item >{customList('Choices', left, 'Unassigned Users')}</Grid>
@@ -238,7 +254,7 @@ function TransferList({users, users_projects, selectedProject, updateUsersProjec
         </Grid>
         
       </Paper>
-    </div>
+
   );
 }
 

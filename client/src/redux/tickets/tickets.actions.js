@@ -1,8 +1,9 @@
 import TicketActionTypes from './tickets.types';
 import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils';
 
-export const fetchTicketsStart = (collectionsMap) => ({
+export const fetchTicketsStart = (payload) => ({
     type: TicketActionTypes.FETCH_TICKETS_START,
+    payload: payload
 })
 
 export const fetchTicketsSuccess = collectionsMap => ({

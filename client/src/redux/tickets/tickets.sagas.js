@@ -1,5 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils';
+import { firestore, convertCollectionsSnapshotToMap, convertTicketsToMap } from '../../firebase/firebase.utils';
 import {
     fetchTicketsFailure,
     fetchTicketsSuccess
@@ -7,25 +7,33 @@ import {
 import TicketActionTypes from './tickets.types';
 
 
-export function* fetchCollectionsAsync() {
+export function* fetchTicketsStartAsync({payload: {projectId}}) {
     yield console.log('fired fetchCollectionsAsync');
 
     try {
-        const collectionRef = firestore.collection('tickets');
-        const snapshot = yield collectionRef.get();
-        const collectionsMap = yield call(convertCollectionsSnapshotToMap, snapshot);
+        const ticketRef = firestore.collection('tickets');
+
+        const query = yield ticketRef.where("projectId", "==", projectId);
+        
+
+        // yield console.log(snapshot);
+        // yield console.log(collectionsMap)
+        const snapshot = yield query.get();
+        const collectionsMap = yield call(convertTicketsToMap, snapshot);
+
+        
         yield put(fetchTicketsSuccess(collectionsMap));
     } catch (error) {
         yield put(fetchTicketsFailure(error.message));
     }
 }
 
-export function* fetchCollectionsStart() {
+export function* fetchTicketsStart() {
     yield takeLatest(
         TicketActionTypes.FETCH_TICKETS_START, 
-        fetchCollectionsAsync)
+        fetchTicketsStartAsync)
 }
 
 export function* ticketSagas() {
-    yield all([call(fetchCollectionsStart)])
+    yield all([call(fetchTicketsStart)])
 }

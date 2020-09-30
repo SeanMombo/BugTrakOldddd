@@ -31,7 +31,7 @@ const App = ({ checkUserSession, currentUser, fetchTicketsStart }) => {
 
   useEffect(() => {
     checkUserSession();
-    fetchTicketsStart();
+    fetchTicketsStart('Sa7D4oQEvWDM2GYuK3H8');
 
   }, [checkUserSession]);
 
@@ -79,7 +79,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   checkUserSession: () => dispatch(checkUserSession()),
-  fetchTicketsStart: () => dispatch(fetchTicketsStart()),
+  fetchTicketsStart: (projectId) => dispatch(fetchTicketsStart({projectId})),
 
 
   

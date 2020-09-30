@@ -15,11 +15,13 @@ import { useHistory } from "react-router-dom";
 
 import { connect } from 'react-redux'
 import { selectProject } from '../../redux/projects/projects.actions'
+import { selectTicketsForPreview } from '../../redux/tickets/tickets.selectors'
 
 import { Switch } from 'react-router-dom'
 import { MemoryRouter as Router } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -63,12 +65,15 @@ const useStyles = makeStyles({
   }
 });
 
-function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
+function ProjectsTable({ type, collection, tickets, searchKey, updateSearchKey, selectProject, selectedProject }) {
 
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  console.log(type)
+  if (type === 0) collection = tickets;
   let rows = collection;
+  console.log(rows);
   let history = useHistory();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -105,94 +110,83 @@ function BasicTable({ collection, searchKey, updateSearchKey, selectProject }) {
 
 
   return (
-    
-    <Paper className={classes.wrapper}>
-       
-      <Divider/>
-      <TableContainer >
-      <TextField 
-          type="text" 
-          class="search form-control" 
-          placeholder="What you looking for?" 
-          value={searchKey}
-          onChange={updateSearchKey}
-      />
-  
-        <Table className={classes.table} size="small" aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Title</StyledTableCell>
-              <StyledTableCell align="left">Description</StyledTableCell>
-              <StyledTableCell align="right"></StyledTableCell>
-     
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row) => (
-              <StyledTableRow key={row.name}>
-                <StyledTableCell component="th" scope="row">
-                  {truncateString(row.title, 20)}
-                </StyledTableCell>
-                <StyledTableCell align="left">{truncateString(row.body, 20)}</StyledTableCell>
-                <StyledTableCell align="right">
 
-                  <Button  
-                    variant="contained" color="primary" size="small" 
-                    className={classes.button}
-                    value={row.id}
-                    onClick={handleClick}
-                    >
-                    
-                  
-                    Manage Project
-                  </Button>
 
-                  
-
-                </StyledTableCell> 
-              </StyledTableRow>
-            ))}
-  
-            {/* {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell  align='right'>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })} */}
-          </TableBody>
-        </Table>
+      <Paper className={classes.wrapper}>
         
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+        <Divider/>
+        <TableContainer >
+        <TextField 
+            type="text" 
+            class="search form-control" 
+            placeholder="What you looking for?" 
+            value={searchKey}
+            onChange={updateSearchKey}
+        />
+    
+          <Table className={classes.table} size="small" aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Title</StyledTableCell>
+                <StyledTableCell align="left">Description</StyledTableCell>
+                <StyledTableCell align="right"></StyledTableCell>
       
-    </Paper>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : rows
+              ).map((row) => (
+                <StyledTableRow key={row.title}>
+                  <StyledTableCell component="th" scope="row">
+                    {truncateString(row.title, 20)}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">{truncateString(row.body, 20)}</StyledTableCell>
+                  <StyledTableCell align="right">
+
+                    <Button  
+                      variant="contained" color="primary" size="small" 
+                      className={classes.button}
+                      value={row.id}
+                      onClick={handleClick}
+                      >
+                      
+                    
+                      Manage Project
+                    </Button>
+
+                    
+
+                  </StyledTableCell> 
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+          
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+        
+      </Paper>
+
    
   );
 }
-
+const mapStateToProps = (state) => ({
+  tickets: selectTicketsForPreview(state)
+})
 
 const mapDispatchToProps = dispatch => ({
   selectProject: (proj) => 
     dispatch(selectProject(proj))
 })
 
-export default connect(null, mapDispatchToProps)(BasicTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectsTable);
